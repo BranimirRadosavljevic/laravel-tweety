@@ -10,7 +10,7 @@ class TweetController extends Controller
     public function index()
     {
         $tweets = Tweet::latest()->get();
-        return view('home', [
+        return view('tweets.index', [
             'tweets' => auth()->user()->timeline()
         ]);
     }
