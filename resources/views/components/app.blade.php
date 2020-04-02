@@ -12,7 +12,7 @@
                     {{ $slot }}
                 </div>
 
-                @if ()
+                @if (auth()->check())
                     <div class="lg:w-1/6">
                         @include('_friends-list')
                     </div>
