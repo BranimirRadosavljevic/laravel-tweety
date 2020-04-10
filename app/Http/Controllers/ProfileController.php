@@ -11,7 +11,10 @@ class ProfileController extends Controller
 {
     public function show(User $user)
     {
-        return view('profiles.show', compact('user'));
+        return view('profiles.show', [
+            'user' => $user,
+            'tweets' => $user->tweets()->paginate(50)
+        ]);
     }
 
     public function edit(User $user)
@@ -22,7 +25,7 @@ class ProfileController extends Controller
     public function update(User $user)
     {
         $attributes = request()->validate([
-            'username' => ['string', 'required', 'max:255', 'alpha_dash', Rule::unique('users')->ignore($user)], 
+            'username' => ['string', 'required', 'max:255', 'alpha_dash', Rule::unique('users')->ignore($user)],
             'name' => ['string', 'required', 'max:255'],
             'avatar' => ['file'],
             'email' => ['string', 'required', 'max:255', 'email', Rule::unique('users')->ignore($user)],
