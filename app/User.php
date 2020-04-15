@@ -49,15 +49,23 @@ class User extends Authenticatable
 
     public function timeline()
     {
-        $ids = $this->follows()->pluck('id');
-        $ids->push($this->id);
-
-        return Tweet::whereIn('user_id', $ids)->latest()->paginate(50);
+        $friends = $this->follows()->pluck('id');
+        
+        return Tweet::whereIn('user_id', $friends)
+            ->orWhere('user_id', $this->id)
+            ->withLikes()
+            ->latest()
+            ->paginate(50);
     }
 
     public function tweets()
     {
         return $this->hasMany(Tweet::class)->latest();
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
     
     public function path($append = null)
